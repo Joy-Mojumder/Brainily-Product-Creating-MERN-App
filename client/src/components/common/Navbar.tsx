@@ -18,7 +18,7 @@ import {
 import { useTheme } from "../theme-provider";
 import { Moon, Sun, Brain, Search } from "lucide-react";
 
-// import CreateNewProduct from "../pages/create/CreateNewProduct";
+import CreateNewProduct from "../pages/create/CreateNewProduct";
 import MenuComponent from "./MenuComponent";
 import { useQuery } from "@tanstack/react-query";
 import Tooltip from "./Tooltip";
@@ -156,7 +156,7 @@ const Navbar = ({
           />
         </Tooltip>
         {/* create new product */}
-        {/* <CreateNewProduct /> */}
+        <CreateNewProduct />
         {/* navigation menu for mobile & pc */}
         <MenuComponent />
       </div>

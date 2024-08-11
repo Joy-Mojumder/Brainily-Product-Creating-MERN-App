@@ -9,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   AlertIcon,
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -288,30 +287,26 @@ const CardProduct = ({ product }: { product: ProductType }) => {
                       onChange={handleOnChange}
                     />
                     {(product.image !== "" || image !== "") && (
-                      <IconButton
-                        isRound={true}
-                        variant="solid"
-                        aria-label="Done"
-                        fontSize="20px"
-                        icon={
-                          <Avatar
-                            src={product.image || image}
-                            name={product?.name || ""}
-                          />
-                        }
-                        onClick={() => {
-                          imageRef.current?.click();
-                          product.image = "";
-                        }}
+                      <Image
+                        src={product.image || image}
+                        alt={product?.name || ""}
+                        boxSize={"30%"}
+                        mx={"auto"}
+                        my={"5"}
                       />
                     )}
-                    <IconButton
-                      isRound={true}
+                    <Button
                       variant="solid"
-                      aria-label="Done"
-                      fontSize="20px"
-                      icon={<ImagePlus />}
-                    />
+                      className="w-full flex gap-2"
+                      onClick={() => {
+                        imageRef.current?.click();
+                        product.image = "";
+                      }}
+                    >
+                      <ImagePlus />
+                      Select Image
+                    </Button>
+
                     <input
                       type="file"
                       accept="image/*"
@@ -346,7 +341,7 @@ const CardProduct = ({ product }: { product: ProductType }) => {
                     )}
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose}>
+                    <Button ref={cancelRef} onClick={onClose} variant="outline">
                       Cancel
                     </Button>
                     <Button
