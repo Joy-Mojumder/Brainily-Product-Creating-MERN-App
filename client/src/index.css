@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  ::-webkit-scrollbar-thumb {
+    @apply bg-stone-900 hover:bg-stone-200/40 dark:bg-stone-100 rounded-full;
+  }
+
+  ::-webkit-scrollbar {
+    @apply bg-stone-100 dark:bg-stone-900;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
