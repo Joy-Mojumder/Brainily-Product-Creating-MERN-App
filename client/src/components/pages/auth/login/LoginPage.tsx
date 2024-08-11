@@ -3,20 +3,31 @@ import {
   AlertDescription,
   AlertIcon,
   Button,
+  FormControl,
+  FormLabel,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Text,
   ToastId,
+  useTheme,
   useToast,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Brain, Eye, EyeOff, LockKeyhole, PencilLine } from "lucide-react";
+import {
+  Brain,
+  Eye,
+  EyeOff,
+  Loader,
+  LockKeyhole,
+  PencilLine,
+} from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
+  const { theme } = useTheme();
   const toast = useToast();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
@@ -120,39 +131,50 @@ const LoginPage = () => {
         className="md:flex-1 flex items-center justify-center md:justify-start"
         onSubmit={handleOnSubmitLogin}
       >
-        <div className="flex flex-col gap-4 md:w-4/5 xl:w-3/5 w-full h-auto bg-white dark:bg-black rounded-lg p-5 shadow-lg">
+        <div className="flex flex-col gap-4 md:w-4/5 xl:w-3/5 w-full h-auto dark:text-white text-black dark:bg-stone-800 bg-white rounded-lg p-5 shadow-lg">
           <Text className="text-xl md:text-2xl font-bold">
             Logged In As Brainily
           </Text>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <PencilLine />
-            </InputLeftElement>
-            <Input
-              type="email"
-              placeholder="Enter email"
-              name="email"
-              value={userData.email}
-              onChange={handleOnChangeLogin}
-              isInvalid={isError}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <LockKeyhole />
-            </InputLeftElement>
-            <Input
-              type={show ? "text" : "password"}
-              placeholder="Enter password"
-              name="password"
-              value={userData.password}
-              onChange={handleOnChangeLogin}
-              isInvalid={isError}
-            />
-            <InputRightElement onClick={handleClick} className="cursor-pointer">
-              {show ? <EyeOff size={20} /> : <Eye size={20} />}
-            </InputRightElement>
-          </InputGroup>
+          <FormControl isInvalid={isError} className="space-y-2">
+            <div>
+              <FormLabel htmlFor="LoginEmail">Email</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <PencilLine />
+                </InputLeftElement>
+                <Input
+                  type="email"
+                  placeholder="Enter email"
+                  name="email"
+                  id="LoginEmail"
+                  value={userData.email}
+                  onChange={handleOnChangeLogin}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <FormLabel htmlFor="LoginPassword">Password</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <LockKeyhole />
+                </InputLeftElement>
+                <Input
+                  type={show ? "text" : "password"}
+                  placeholder="Enter password"
+                  name="password"
+                  id="LoginPassword"
+                  value={userData.password}
+                  onChange={handleOnChangeLogin}
+                />
+                <InputRightElement
+                  onClick={handleClick}
+                  className="cursor-pointer"
+                >
+                  {show ? <EyeOff size={20} /> : <Eye size={20} />}
+                </InputRightElement>
+              </InputGroup>
+            </div>
+          </FormControl>
           {isError && (
             <Alert
               status="error"
@@ -170,7 +192,7 @@ const LoginPage = () => {
               variant={"left-accent"}
             >
               <AlertIcon />
-              <AlertDescription>Product created successfully</AlertDescription>
+              <AlertDescription>Login successful</AlertDescription>
             </Alert>
           )}
           <div className="flex flex-col gap-3">
@@ -178,12 +200,16 @@ const LoginPage = () => {
               className="w-full hover:opacity-70 transition duration-200"
               onClick={handleToastUser}
               type="submit"
+              variant="solid"
+              bgColor={"black"}
+              color={"white"}
+              _hover={{
+                bgColor: "#3f3f46",
+                color: theme === "light" ? "black" : "white",
+                opacity: "0.8",
+              }}
             >
-              {isPending ? (
-                <span className="loading loading-bars loading-md" />
-              ) : (
-                "Login"
-              )}
+              {isPending ? <Loader className="animate-spin" /> : "Login"}
             </Button>
             <Text className="text-start text-sm font-semibold">
               Don't have an account?
@@ -191,7 +217,7 @@ const LoginPage = () => {
             <Link to="/signup">
               <Button
                 variant={"outline"}
-                className="w-full hover:bg-stone-300 dark:hover:bg-stone-700 hover:opacity-70 transition duration-200 border-2"
+                className="dark:hover:text-black dark:text-white w-full"
               >
                 SignUp
               </Button>

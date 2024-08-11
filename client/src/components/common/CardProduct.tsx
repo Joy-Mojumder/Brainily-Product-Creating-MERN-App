@@ -1,19 +1,21 @@
 import { FilePenLine, ImagePlus, Loader, Trash2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  Alert,
+  AlertDescription,
   AlertDialog,
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  AlertIcon,
   Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   IconButton,
   Image,
@@ -275,35 +277,42 @@ const CardProduct = ({ product }: { product: ProductType }) => {
                   <AlertDialogBody className="gap-2">
                     <FormControl isInvalid={isError} className="space-y-3">
                       <div>
-                        <FormLabel htmlFor="name">Product Name</FormLabel>
+                        <FormLabel htmlFor="CardProductName">
+                          Product Name
+                        </FormLabel>
                         <Input
                           placeholder="Product Name"
                           type="text"
                           name="name"
+                          id="CardProductName"
                           value={formData.name || ""}
                           className="w-full"
                           onChange={handleOnChange}
                         />
                       </div>
                       <div>
-                        <FormLabel htmlFor="description">
+                        <FormLabel htmlFor="CardProductDescription">
                           Product Description
                         </FormLabel>
                         <Input
                           placeholder="Product Description"
                           type="text"
                           name="description"
+                          id="CardProductDescription"
                           value={formData.description || ""}
                           className="w-full"
                           onChange={handleOnChange}
                         />
                       </div>
                       <div>
-                        <FormLabel htmlFor="price">Product Price</FormLabel>
+                        <FormLabel htmlFor="CardProductPrice">
+                          Product Price
+                        </FormLabel>
                         <Input
                           placeholder="Product Price"
                           type="number"
                           name="price"
+                          id="CardProductPrice"
                           value={formData.price || ""}
                           className="w-full"
                           onChange={handleOnChange}
@@ -335,18 +344,31 @@ const CardProduct = ({ product }: { product: ProductType }) => {
                         accept="image/*"
                         hidden
                         ref={imageRef}
-                        className="w-full"
                         onChange={handleImgChange}
                       />
                       {isError && (
-                        <FormErrorMessage>
-                          {(updateError as Error).message}
-                        </FormErrorMessage>
+                        <Alert
+                          status="error"
+                          className="text-black font-semibold"
+                          variant={"left-accent"}
+                        >
+                          <AlertIcon />
+                          <AlertDescription>
+                            {updateError?.message}
+                          </AlertDescription>
+                        </Alert>
                       )}
                       {isSuccess && (
-                        <Text color="green.500">
-                          Product created successfully
-                        </Text>
+                        <Alert
+                          status="success"
+                          className="text-black font-semibold"
+                          variant={"left-accent"}
+                        >
+                          <AlertIcon />
+                          <AlertDescription>
+                            Product updated successfully
+                          </AlertDescription>
+                        </Alert>
                       )}
                     </FormControl>
                   </AlertDialogBody>

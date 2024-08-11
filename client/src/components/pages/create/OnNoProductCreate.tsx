@@ -141,10 +141,11 @@ const CreateNewProduct = () => {
     <>
       <Tooltip label="Create">
         <IconButton
-          isRound={true}
           variant="solid"
           aria-label="Create"
-          fontSize="20px"
+          w={"100px"}
+          h={"60px"}
+          size="lg"
           icon={<SquarePen className="invert" />}
           onClick={onOpen}
           bgColor={theme === "light" ? "#3f3f46" : "white"}
@@ -170,40 +171,40 @@ const CreateNewProduct = () => {
               <AlertDialogBody>
                 <FormControl isInvalid={isError} className="space-y-3">
                   <div>
-                    <FormLabel htmlFor="CreateNewProductName">
+                    <FormLabel htmlFor="OnNoProductCreateName">
                       Product Name
                     </FormLabel>
                     <Input
                       placeholder="Product Name"
                       type="text"
                       name="name"
-                      id="CreateNewProductName"
+                      id="OnNoProductCreateName"
                       value={formData.name || ""}
                       onChange={handleOnChange}
                     />
                   </div>
                   <div>
-                    <FormLabel htmlFor="CreateNewProductDescription">
+                    <FormLabel htmlFor="OnNoProductCreateDescription">
                       Product Description
                     </FormLabel>
                     <Input
                       placeholder="Product Description"
                       type="text"
                       name="description"
-                      id="CreateNewProductDescription"
+                      id="OnNoProductCreateDescription"
                       value={formData.description || ""}
                       onChange={handleOnChange}
                     />
                   </div>
                   <div>
-                    <FormLabel htmlFor="CreateNewProductPrice">
+                    <FormLabel htmlFor="OnNoProductCreatePrice">
                       Product Price
                     </FormLabel>
                     <Input
                       placeholder="Product Price"
                       type="number"
                       name="price"
-                      id="CreateNewProductPrice"
+                      id="OnNoProductCreatePrice"
                       value={formData.price || ""}
                       onChange={handleOnChange}
                     />
@@ -236,6 +237,7 @@ const CreateNewProduct = () => {
                     accept="image/*"
                     hidden
                     ref={imageRef}
+                    className="w-full"
                     onChange={handleImgChange}
                   />
                   {isError && (

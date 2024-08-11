@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AlignRight, LogOut, X } from "lucide-react";
 import { useTheme } from "../theme-provider";
 import toast from "react-hot-toast";
-// import UpdateUser from "../pages/create/UpdateUser";
+import UpdateUser from "../pages/create/UpdateUser";
 const MenuForMobileTab = () => {
   const { theme } = useTheme();
   const bgDrop = "#1b2021";
@@ -67,6 +67,11 @@ const MenuForMobileTab = () => {
                 opacity: "0.8",
                 color: `${theme !== "dark" ? "white" : "black"}`,
               }}
+              _active={{
+                bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+                opacity: "0.8",
+                color: `${theme !== "dark" ? "white" : "black"}`,
+              }}
             />
           </Tooltip>
           <MenuList
@@ -75,7 +80,7 @@ const MenuForMobileTab = () => {
             borderColor={"transparent"}
             borderRadius={"0.5rem"}
           >
-            {/* <UpdateUser /> */}
+            <UpdateUser />
 
             <MenuDivider
               h={"1px"}

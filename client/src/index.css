@@ -4,19 +4,20 @@
 
 @layer base {
   ::-webkit-scrollbar-thumb {
-    @apply bg-stone-900 hover:bg-stone-200/40 dark:bg-stone-100 rounded-full;
+    @apply bg-stone-900 hover:bg-stone-700/40 dark:bg-stone-100 dark:hover:bg-slate-300/40 rounded-full;
   }
 
-  ::-webkit-scrollbar {
+  ::-webkit-scrollbar-track {
     @apply bg-stone-100 dark:bg-stone-900;
   }
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
+  cursor: pointer;
   border: 3px solid transparent;
   background-clip: content-box;
 }

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import CardProduct from "./CardProduct";
 import { useEffect } from "react";
-// import OnNoProductCreate from "../pages/create/OnNoProductCreate";
+import OnNoProductCreate from "../pages/create/OnNoProductCreate";
 import { ChevronsDown } from "lucide-react";
 
 interface ProductType {
@@ -58,7 +58,7 @@ const ProductCardsAll = ({
               Create your first product
             </p>
             <ChevronsDown className="animate-bounce" />
-            {/* <OnNoProductCreate /> */}
+            <OnNoProductCreate />
           </div>
           <p className="text-xl md:text-2xl font-semibold ">
             No products found

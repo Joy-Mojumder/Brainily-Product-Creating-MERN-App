@@ -2,27 +2,35 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
+  Avatar,
   Button,
+  FormControl,
+  FormLabel,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Text,
   ToastId,
+  Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Brain,
+  ChevronsDown,
   Eye,
   EyeOff,
   ImagePlus,
+  Loader,
   LockKeyhole,
   MailPlus,
   PencilLine,
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../../theme-provider";
 
 interface SignUpData {
   username: string;
@@ -30,6 +38,7 @@ interface SignUpData {
   password: string;
 }
 const SignUpPage = () => {
+  const { theme } = useTheme();
   const toast = useToast();
   const [show, setShow] = useState(false);
   const [image, setImg] = useState("");
@@ -147,83 +156,101 @@ const SignUpPage = () => {
         className="md:flex-1 flex items-center justify-center md:justify-start"
         onSubmit={handleOnSubmit}
       >
-        <div className="flex flex-col gap-4 md:w-4/5 xl:w-3/5 w-full h-auto bg-white dark:bg-black rounded-lg p-5 shadow-lg">
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <Text className="font-bold text-base lg:text-xl">
-              Profile Image
-            </Text>
-            <Button
-              variant="outline"
-              className="flex rounded-full size-20 md:size-24 lg:size-28 p-0 hover:bg-stone-400 hover:opacity-70 dark:hover:bg-stone-700 transition duration-200"
-              type="button"
-              onClick={() => imageRef.current?.click()}
-            >
-              {image ? (
-                <img
-                  src={image}
-                  className="w-full h-full object-cover rounded-full hover:brightness-75 transition duration-200"
-                />
-              ) : (
-                <span className="flex flex-col gap-1 lg:gap-2 items-center justify-center text-[0.6rem] lg:text-xs xl:text-sm font-semibold">
-                  <ImagePlus className="size-4 lg:size-6" />
-                  Select Image
-                </span>
-              )}
-            </Button>
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              ref={imageRef}
-              className="w-full"
-              onChange={handleImgChange}
-            />
-          </div>
-          <Text className="text-xl md:text-2xl font-bold">
+        <div className="flex flex-col gap-3 md:w-4/5 xl:w-3/5 w-full h-auto dark:text-white text-black dark:bg-stone-800 bg-white rounded-lg p-5 shadow-lg">
+          <Text className="text-xl md:text-2xl font-bold mx-auto">
             SignUp In Brainily
           </Text>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <PencilLine />
-            </InputLeftElement>
-            <Input
-              type="text"
-              placeholder="Enter name"
-              name="username"
-              value={userData.username || ""}
-              onChange={handleOnChange}
-              isInvalid={isError}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <MailPlus />
-            </InputLeftElement>
-            <Input
-              type="email"
-              placeholder="Enter email"
-              name="email"
-              value={userData.email || ""}
-              onChange={handleOnChange}
-              isInvalid={isError}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <LockKeyhole />
-            </InputLeftElement>
-            <Input
-              type={show ? "text" : "password"}
-              placeholder="Enter password"
-              name="password"
-              value={userData.password || ""}
-              onChange={handleOnChange}
-              isInvalid={isError}
-            />
-            <InputRightElement onClick={handleClick} className="cursor-pointer">
-              {show ? <EyeOff size={20} /> : <Eye size={20} />}
-            </InputRightElement>
-          </InputGroup>
+          <FormControl isInvalid={isError} className="space-y-2">
+            <div className="flex flex-col gap-6 items-center justify-center">
+              <ChevronsDown className="animate-bounce" />
+
+              <IconButton
+                isRound={true}
+                variant="solid"
+                aria-label="Profile Image"
+                icon={
+                  <Tooltip label="Profile Image">
+                    {image !== "" ? (
+                      <Avatar
+                        size="xl"
+                        src={image}
+                        className="hover:brightness-75 transition duration-200"
+                      />
+                    ) : (
+                      <Avatar
+                        size="xl"
+                        icon={<ImagePlus />}
+                        className="hover:brightness-75 transition duration-200"
+                      />
+                    )}
+                  </Tooltip>
+                }
+                onClick={() => imageRef.current?.click()}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                ref={imageRef}
+                onChange={handleImgChange}
+              />
+            </div>
+
+            <div>
+              <FormLabel htmlFor="SignUpUsername">Username</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <PencilLine />
+                </InputLeftElement>
+                <Input
+                  type="text"
+                  placeholder="Enter name"
+                  name="username"
+                  id="SignUpUsername"
+                  value={userData.username || ""}
+                  onChange={handleOnChange}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <FormLabel htmlFor="SignUpEmail">Email</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <MailPlus />
+                </InputLeftElement>
+                <Input
+                  type="email"
+                  placeholder="Enter email"
+                  name="email"
+                  id="SignUpEmail"
+                  value={userData.email || ""}
+                  onChange={handleOnChange}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <FormLabel htmlFor="SignUpPassword">Password</FormLabel>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <LockKeyhole />
+                </InputLeftElement>
+                <Input
+                  type={show ? "text" : "password"}
+                  placeholder="Enter password"
+                  name="password"
+                  id="SignUpPassword"
+                  value={userData.password || ""}
+                  onChange={handleOnChange}
+                />
+                <InputRightElement
+                  onClick={handleClick}
+                  className="cursor-pointer"
+                >
+                  {show ? <EyeOff size={20} /> : <Eye size={20} />}
+                </InputRightElement>
+              </InputGroup>
+            </div>
+          </FormControl>
           {isError && (
             <Alert
               status="error"
@@ -241,7 +268,7 @@ const SignUpPage = () => {
               variant={"left-accent"}
             >
               <AlertIcon />
-              <AlertDescription>Product created successfully</AlertDescription>
+              <AlertDescription>SignUp Successful</AlertDescription>
             </Alert>
           )}
           <div className="flex flex-col gap-3">
@@ -249,12 +276,16 @@ const SignUpPage = () => {
               className="w-full hover:opacity-70 transition duration-200"
               type="submit"
               onClick={handleToastUser}
+              variant="solid"
+              bgColor={"black"}
+              color={"white"}
+              _hover={{
+                bgColor: "#3f3f46",
+                color: theme === "light" ? "black" : "white",
+                opacity: "0.8",
+              }}
             >
-              {isPending ? (
-                <span className="loading loading-bars loading-md" />
-              ) : (
-                "Sign Up"
-              )}
+              {isPending ? <Loader className="animate-spin" /> : "Sign Up"}
             </Button>
             <Text className="text-start text-sm font-semibold">
               Already have an account?
@@ -262,7 +293,7 @@ const SignUpPage = () => {
             <Link to="/login">
               <Button
                 variant={"outline"}
-                className="w-full hover:bg-stone-400 hover:opacity-70 dark:hover:bg-stone-700 border-2 transition duration-200"
+                className="dark:hover:text-black dark:text-white w-full"
               >
                 Login
               </Button>

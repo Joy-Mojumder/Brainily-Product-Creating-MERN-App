@@ -69,7 +69,6 @@ export const signup = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Server Error" });
   }
 };
@@ -112,7 +111,6 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Server Error" });
   }
 };
@@ -128,7 +126,6 @@ export const logout = async (req, res) => {
     // ^ send response
     res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Server Error" });
   }
 };
@@ -144,7 +141,6 @@ export const getMe = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Server Error" });
   }
 };

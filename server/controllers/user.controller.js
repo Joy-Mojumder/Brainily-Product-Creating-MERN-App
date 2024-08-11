@@ -101,7 +101,6 @@ export const updateUser = async (req, res) => {
     // * send response with updated user
     res.status(200).json({ success: true, data: user });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -135,7 +134,6 @@ export const searchProduct = async (req, res) => {
 
     res.status(200).json({ success: true, data: myProducts });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };

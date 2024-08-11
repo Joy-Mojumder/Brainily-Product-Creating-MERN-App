@@ -84,22 +84,24 @@ const Navbar = ({
 
       <div className="flex gap-3 md:gap-1 lg:gap-5 items-center justify-center">
         <Popover>
-          <Tooltip label="Profile">
-            <PopoverTrigger>
-              <IconButton
-                isRound={true}
-                variant="solid"
-                bgColor={theme === "light" ? "#3f3f46" : "white"}
-                _hover={{
-                  bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
-                  opacity: "0.8",
-                }}
-                aria-label="Profile"
-                fontSize="20px"
-                icon={<Avatar src={image || ""} name={username} size="sm" />}
-              />
-            </PopoverTrigger>
-          </Tooltip>
+          <PopoverTrigger>
+            <IconButton
+              isRound={true}
+              variant="solid"
+              bgColor={theme === "light" ? "#3f3f46" : "white"}
+              _hover={{
+                bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+                opacity: "0.8",
+              }}
+              aria-label="Profile"
+              fontSize="20px"
+              icon={
+                <Tooltip label="Profile">
+                  <Avatar src={image || ""} name={username} size="sm" />
+                </Tooltip>
+              }
+            />
+          </PopoverTrigger>
 
           <Portal>
             <PopoverContent
