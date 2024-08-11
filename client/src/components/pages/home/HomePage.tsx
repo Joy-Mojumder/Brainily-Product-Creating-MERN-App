@@ -5,8 +5,6 @@ import { Radio, RadioGroup } from "@chakra-ui/react";
 const HomePage = ({ searchVal }: { searchVal: string }) => {
   const [value, setValue] = useState("-createdAt");
 
-  console.log(searchVal);
-
   return (
     <main className="w-full h-full px-5 lg:px-10 py-2 lg:py-5 space-y-5">
       <div className="flex items-center justify-between px-5 lg:px-10">
@@ -23,6 +21,7 @@ const HomePage = ({ searchVal }: { searchVal: string }) => {
               <Radio
                 value="-createdAt"
                 colorScheme="orange"
+                defaultChecked
                 size={{ base: "sm", md: "md" }}
               >
                 latest
@@ -35,7 +34,7 @@ const HomePage = ({ searchVal }: { searchVal: string }) => {
                 name
               </Radio>
               <Radio
-                value="price"
+                value="-price"
                 colorScheme="orange"
                 size={{ base: "sm", md: "md" }}
               >

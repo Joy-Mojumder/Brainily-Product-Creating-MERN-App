@@ -1,19 +1,19 @@
-import { FilePenLine, ImagePlus, Trash2 } from "lucide-react";
+import { FilePenLine, ImagePlus, Loader, Trash2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Alert,
-  AlertDescription,
   AlertDialog,
+  AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  AlertIcon,
   Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
+  FormControl,
+  FormErrorMessage,
   FormLabel,
   IconButton,
   Image,
@@ -26,6 +26,7 @@ import {
 
 import { useRef, useState } from "react";
 import { formatDate } from "../utils/date";
+import { useTheme } from "../theme-provider";
 
 interface ProductType {
   _id: string;
@@ -38,6 +39,7 @@ interface ProductType {
 }
 const CardProduct = ({ product }: { product: ProductType }) => {
   const toast = useToast();
+  const { theme } = useTheme();
   interface FormData {
     name: string;
     description: string;
@@ -198,7 +200,13 @@ const CardProduct = ({ product }: { product: ProductType }) => {
     });
   };
   return (
-    <Card className="w-80 hover:scale-105 transition duration-300">
+    <Card
+      className="w-80 hover:scale-105 transition duration-300"
+      bgColor={theme === "dark" ? "black" : "white"}
+      color={theme === "dark" ? "white" : "black"}
+      variant="outline"
+      shadow={"md"}
+    >
       <CardHeader>
         <div className="flex justify-between">
           <span className="text-2xl font-semibold capitalize">
@@ -226,15 +234,20 @@ const CardProduct = ({ product }: { product: ProductType }) => {
       </CardBody>
       <CardFooter className="flex flex-col gap-5">
         <div>
-          <p className="text-xl font-semibold">{product.price}</p>
+          <p className="text-xl text-center font-semibold">{product.price}</p>
         </div>
         <div className="flex items-center gap-10 justify-center">
           {/* alert dialog for editing */}
 
           <IconButton
-            isRound={true}
-            variant="solid"
-            aria-label="Done"
+            variant={"ghost"}
+            color={theme === "dark" ? "white" : "black"}
+            _hover={{
+              bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+              opacity: "0.8",
+              color: `${theme !== "dark" ? "white" : "black"}`,
+            }}
+            aria-label="Edit"
             fontSize="20px"
             icon={<FilePenLine />}
             onClick={() => {
@@ -254,103 +267,113 @@ const CardProduct = ({ product }: { product: ProductType }) => {
             onClose={onClose}
           >
             <AlertDialogOverlay>
-              <AlertDialogContent className="dark:text-white ">
-                <form onSubmit={handleOnSubmit} className="space-y-8">
-                  <AlertDialogHeader className="gap-2">
-                    <FormLabel htmlFor="name">Product Name</FormLabel>
-                    <Input
-                      placeholder="Product Name"
-                      type="text"
-                      name="name"
-                      value={formData.name || ""}
-                      className="w-full"
-                      onChange={handleOnChange}
-                    />
-                    <FormLabel htmlFor="description">
-                      Product Description
-                    </FormLabel>
-                    <Input
-                      placeholder="Product Description"
-                      type="text"
-                      name="description"
-                      value={formData.description || ""}
-                      className="w-full"
-                      onChange={handleOnChange}
-                    />
-                    <FormLabel htmlFor="price">Product Price</FormLabel>
-                    <Input
-                      placeholder="Product Price"
-                      type="number"
-                      name="price"
-                      value={formData.price || ""}
-                      className="w-full"
-                      onChange={handleOnChange}
-                    />
-                    {(product.image !== "" || image !== "") && (
-                      <Image
-                        src={product.image || image}
-                        alt={product?.name || ""}
-                        boxSize={"30%"}
-                        mx={"auto"}
-                        my={"5"}
-                      />
-                    )}
-                    <Button
-                      variant="solid"
-                      className="w-full flex gap-2"
-                      onClick={() => {
-                        imageRef.current?.click();
-                        product.image = "";
-                      }}
-                    >
-                      <ImagePlus />
-                      Select Image
-                    </Button>
+              <AlertDialogContent className="dark:text-white text-black dark:bg-stone-800 bg-stone-200">
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Edit Product
+                </AlertDialogHeader>
+                <form onSubmit={handleOnSubmit}>
+                  <AlertDialogBody className="gap-2">
+                    <FormControl isInvalid={isError} className="space-y-3">
+                      <div>
+                        <FormLabel htmlFor="name">Product Name</FormLabel>
+                        <Input
+                          placeholder="Product Name"
+                          type="text"
+                          name="name"
+                          value={formData.name || ""}
+                          className="w-full"
+                          onChange={handleOnChange}
+                        />
+                      </div>
+                      <div>
+                        <FormLabel htmlFor="description">
+                          Product Description
+                        </FormLabel>
+                        <Input
+                          placeholder="Product Description"
+                          type="text"
+                          name="description"
+                          value={formData.description || ""}
+                          className="w-full"
+                          onChange={handleOnChange}
+                        />
+                      </div>
+                      <div>
+                        <FormLabel htmlFor="price">Product Price</FormLabel>
+                        <Input
+                          placeholder="Product Price"
+                          type="number"
+                          name="price"
+                          value={formData.price || ""}
+                          className="w-full"
+                          onChange={handleOnChange}
+                        />
+                      </div>
+                      {(product.image !== "" || image !== "") && (
+                        <Image
+                          src={product.image || image}
+                          alt={product?.name || ""}
+                          boxSize={"30%"}
+                          mx={"auto"}
+                          my={"5"}
+                        />
+                      )}
+                      <Button
+                        variant="solid"
+                        className="w-full flex gap-2"
+                        onClick={() => {
+                          imageRef.current?.click();
+                          product.image = "";
+                        }}
+                      >
+                        <ImagePlus />
+                        Select Image
+                      </Button>
 
-                    <input
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      ref={imageRef}
-                      className="w-full"
-                      onChange={handleImgChange}
-                    />
-                    {isError && (
-                      <Alert
-                        status="error"
-                        className="text-black font-semibold"
-                        variant={"left-accent"}
-                      >
-                        <AlertIcon />
-                        <AlertDescription>
-                          {updateError?.message}
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                    {isSuccess && (
-                      <Alert
-                        status="success"
-                        className="text-black font-semibold"
-                        variant={"left-accent"}
-                      >
-                        <AlertIcon />
-                        <AlertDescription>
-                          Product updated successfully
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose} variant="outline">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        ref={imageRef}
+                        className="w-full"
+                        onChange={handleImgChange}
+                      />
+                      {isError && (
+                        <FormErrorMessage>
+                          {(updateError as Error).message}
+                        </FormErrorMessage>
+                      )}
+                      {isSuccess && (
+                        <Text color="green.500">
+                          Product created successfully
+                        </Text>
+                      )}
+                    </FormControl>
+                  </AlertDialogBody>
+                  <AlertDialogFooter className="space-x-4">
+                    <Button
+                      ref={cancelRef}
+                      onClick={onClose}
+                      variant="outline"
+                      className="dark:hover:text-black dark:text-white"
+                    >
                       Cancel
                     </Button>
                     <Button
                       type="submit"
                       disabled={isUpdatePending}
                       onClick={handleToastUser}
+                      variant="solid"
+                      bgColor={"black"}
+                      color={"white"}
+                      _hover={{
+                        bgColor: "#3f3f46",
+                        color: theme === "light" ? "black" : "white",
+                        opacity: "0.8",
+                      }}
                     >
                       {isUpdatePending ? (
-                        <span className="loading loading-bars loading-md"></span>
+                        <Loader className="animate-spin" />
                       ) : (
                         "Update"
                       )}
@@ -362,6 +385,12 @@ const CardProduct = ({ product }: { product: ProductType }) => {
           </AlertDialog>
           <IconButton
             variant={"ghost"}
+            color={theme === "dark" ? "white" : "black"}
+            _hover={{
+              bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+              opacity: "0.8",
+              color: `${theme !== "dark" ? "white" : "black"}`,
+            }}
             onClick={() => {
               deleteProduct(product._id);
               handleToastUser();
@@ -370,11 +399,7 @@ const CardProduct = ({ product }: { product: ProductType }) => {
             className="dim"
             disabled={isDeletePending}
             icon={
-              isDeletePending ? (
-                <span className="loading loading-bars loading-md"></span>
-              ) : (
-                <Trash2 />
-              )
+              isDeletePending ? <Loader className="animate-spin" /> : <Trash2 />
             }
           />
         </div>

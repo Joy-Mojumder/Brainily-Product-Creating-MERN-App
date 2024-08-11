@@ -6,13 +6,13 @@ import {
   IconButton,
   MenuDivider,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { AlignRight, LogOut, X } from "lucide-react";
 import { useTheme } from "../theme-provider";
 import toast from "react-hot-toast";
-import Tooltip from "./Tooltip";
 // import UpdateUser from "../pages/create/UpdateUser";
 const MenuForMobileTab = () => {
   const { theme } = useTheme();
@@ -53,22 +53,18 @@ const MenuForMobileTab = () => {
     <Menu>
       {({ isOpen }) => (
         <>
-          <Tooltip name="Menu">
+          <Tooltip label="Menu">
             <MenuButton
               as={IconButton}
               isActive={isOpen}
               rounded={"full"}
               icon={isOpen ? <X /> : <AlignRight />}
-              color={theme === "dark" ? "white" : "black"}
-              bg={"transparent"}
+              color={theme !== "dark" ? "white" : "black"}
+              bg={theme !== "dark" ? "#3f3f46" : "#f7f7f7"}
               variant={"ghost"}
               _hover={{
                 bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
                 opacity: "0.8",
-                color: `${theme !== "dark" ? "white" : "black"}`,
-              }}
-              _active={{
-                bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
                 color: `${theme !== "dark" ? "white" : "black"}`,
               }}
             />

@@ -1,11 +1,8 @@
-import { ImagePlus, SquarePen } from "lucide-react";
+import { ImagePlus, Loader, SquarePen } from "lucide-react";
 
 import {
   Image,
   Input,
-  Alert,
-  AlertIcon,
-  AlertDescription,
   useToast,
   ToastId,
   IconButton,
@@ -17,12 +14,19 @@ import {
   Button,
   AlertDialogFooter,
   useDisclosure,
+  Tooltip,
+  FormControl,
+  FormErrorMessage,
+  AlertDialogBody,
+  Text,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Tooltip from "../../common/Tooltip";
+import { useTheme } from "../../theme-provider";
 
 const CreateNewProduct = () => {
+  const { theme } = useTheme();
+
   const toast = useToast();
   interface FormData {
     name: string;
@@ -134,14 +138,20 @@ const CreateNewProduct = () => {
   };
   return (
     <>
-      <Tooltip name="Create">
+      <Tooltip label="Create">
         <IconButton
           isRound={true}
           variant="solid"
           aria-label="Done"
           fontSize="20px"
-          icon={<SquarePen />}
+          icon={<SquarePen className="invert" />}
           onClick={onOpen}
+          bgColor={theme === "light" ? "#3f3f46" : "white"}
+          _hover={{
+            bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+            opacity: "0.8",
+          }}
+          color={theme === "light" ? "black" : "white"}
         />
       </Tooltip>
 
@@ -151,98 +161,104 @@ const CreateNewProduct = () => {
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent className="dark:text-white">
-            <form onSubmit={handleOnSubmit} className="space-y-8">
-              <AlertDialogHeader className="gap-2">
-                <FormLabel htmlFor="name">Product Name</FormLabel>
-                <Input
-                  isInvalid={isError}
-                  placeholder="Product Name"
-                  type="text"
-                  name="name"
-                  value={formData.name || ""}
-                  className="w-full"
-                  onChange={handleOnChange}
-                />
-                <FormLabel htmlFor="description">Product Description</FormLabel>
-                <Input
-                  isInvalid={isError}
-                  placeholder="Product Description"
-                  type="text"
-                  name="description"
-                  value={formData.description || ""}
-                  className="w-full"
-                  onChange={handleOnChange}
-                />
-                <FormLabel htmlFor="price">Product Price</FormLabel>
-                <Input
-                  isInvalid={isError}
-                  placeholder="Product Price"
-                  type="number"
-                  name="price"
-                  value={formData.price || ""}
-                  className="w-full"
-                  onChange={handleOnChange}
-                />
-                {image !== "" && (
-                  <Image
-                    src={image}
-                    alt={formData?.name || ""}
-                    boxSize={"30%"}
-                    mx="auto"
+          <AlertDialogContent className="dark:text-white text-black dark:bg-stone-800 bg-stone-200">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Create New Product
+            </AlertDialogHeader>
+            <form onSubmit={handleOnSubmit}>
+              <AlertDialogBody>
+                <FormControl isInvalid={isError} className="space-y-3">
+                  <div>
+                    <FormLabel htmlFor="name">Product Name</FormLabel>
+                    <Input
+                      placeholder="Product Name"
+                      type="text"
+                      name="name"
+                      value={formData.name || ""}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                  <div>
+                    <FormLabel htmlFor="description">
+                      Product Description
+                    </FormLabel>
+                    <Input
+                      placeholder="Product Description"
+                      type="text"
+                      name="description"
+                      value={formData.description || ""}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                  <div>
+                    <FormLabel htmlFor="price">Product Price</FormLabel>
+                    <Input
+                      placeholder="Product Price"
+                      type="number"
+                      name="price"
+                      value={formData.price || ""}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                  {image !== "" && (
+                    <Image
+                      src={image}
+                      alt={formData?.name || ""}
+                      boxSize={"30%"}
+                      mx="auto"
+                    />
+                  )}
+                  <Button
+                    variant="outline"
+                    className="w-full flex gap-2 text-black dark:text-white"
+                    type="button"
+                    onClick={() => imageRef.current?.click()}
+                  >
+                    <ImagePlus />
+                    Select Image
+                  </Button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    ref={imageRef}
+                    className="w-full"
+                    onChange={handleImgChange}
                   />
-                )}
+                  {isError && (
+                    <FormErrorMessage>
+                      {(createError as Error).message}
+                    </FormErrorMessage>
+                  )}
+                  {isSuccess && (
+                    <Text color="green.500">Product created successfully</Text>
+                  )}
+                </FormControl>
+              </AlertDialogBody>
+              <AlertDialogFooter className="space-x-4">
                 <Button
+                  ref={cancelRef}
+                  onClick={onClose}
                   variant="outline"
-                  className="w-full flex gap-2"
-                  type="button"
-                  onClick={() => imageRef.current?.click()}
+                  className="dark:hover:text-black dark:text-white"
                 >
-                  <ImagePlus />
-                  Select Image
-                </Button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  ref={imageRef}
-                  className="w-full"
-                  onChange={handleImgChange}
-                />
-                {isError && (
-                  <Alert
-                    status="error"
-                    className="text-black font-semibold"
-                    variant={"left-accent"}
-                  >
-                    <AlertIcon />
-                    <AlertDescription>{createError?.message}</AlertDescription>
-                  </Alert>
-                )}
-                {isSuccess && (
-                  <Alert
-                    status="success"
-                    className="text-black font-semibold"
-                    variant={"left-accent"}
-                  >
-                    <AlertIcon />
-                    <AlertDescription>
-                      Product created successfully
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onClose} variant="outline">
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isCreatePending}
                   onClick={handleToastUser}
+                  variant="solid"
+                  bgColor={"black"}
+                  color={"white"}
+                  _hover={{
+                    bgColor: "#3f3f46",
+                    color: theme === "light" ? "black" : "white",
+                    opacity: "0.8",
+                  }}
                 >
                   {isCreatePending ? (
-                    <span className="loading loading-bars loading-md"></span>
+                    <Loader className="animate-spin" />
                   ) : (
                     "Create"
                   )}

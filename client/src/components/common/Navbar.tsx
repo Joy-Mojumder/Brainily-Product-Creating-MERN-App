@@ -14,6 +14,7 @@ import {
   Text,
   Avatar,
   IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useTheme } from "../theme-provider";
 import { Moon, Sun, Brain, Search } from "lucide-react";
@@ -21,7 +22,6 @@ import { Moon, Sun, Brain, Search } from "lucide-react";
 import CreateNewProduct from "../pages/create/CreateNewProduct";
 import MenuComponent from "./MenuComponent";
 import { useQuery } from "@tanstack/react-query";
-import Tooltip from "./Tooltip";
 import { formatUserDate } from "../utils/date";
 
 const Navbar = ({
@@ -84,21 +84,19 @@ const Navbar = ({
 
       <div className="flex gap-3 md:gap-1 lg:gap-5 items-center justify-center">
         <Popover>
-          <Tooltip name="Profile">
+          <Tooltip label="Profile">
             <PopoverTrigger>
               <IconButton
                 isRound={true}
                 variant="solid"
-                aria-label="Done"
+                bgColor={theme === "light" ? "#3f3f46" : "white"}
+                _hover={{
+                  bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+                  opacity: "0.8",
+                }}
+                aria-label="Profile"
                 fontSize="20px"
-                icon={
-                  <Avatar
-                    src={image || ""}
-                    name={username}
-                    size="sm"
-                    className="hover:brightness-75 transition duration-200"
-                  />
-                }
+                icon={<Avatar src={image || ""} name={username} size="sm" />}
               />
             </PopoverTrigger>
           </Tooltip>
@@ -144,15 +142,27 @@ const Navbar = ({
         </Popover>
 
         {/* theme switcher */}
-        <Tooltip name="Theme">
+        <Tooltip label="Theme">
           <IconButton
             isRound={true}
             variant="solid"
             className="active:rotate-90 transition duration-200"
+            bgColor={theme === "light" ? "#3f3f46" : "white"}
+            _hover={{
+              bg: `${theme !== "dark" ? "#3f3f46" : "#f7f7f7"}`,
+              opacity: "0.8",
+            }}
+            color={theme === "light" ? "black" : "white"}
             aria-label="Done"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             fontSize="20px"
-            icon={theme === "dark" ? <Sun /> : <Moon />}
+            icon={
+              theme === "dark" ? (
+                <Sun className="invert" />
+              ) : (
+                <Moon className="invert" />
+              )
+            }
           />
         </Tooltip>
         {/* create new product */}
