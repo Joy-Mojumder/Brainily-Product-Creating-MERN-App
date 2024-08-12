@@ -1,7 +1,7 @@
 {
   "name": "brainily-mern_app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/server.js",
     "build": "npm install && npm install --prefix client && npm run build --prefix client",

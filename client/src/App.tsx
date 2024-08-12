@@ -6,6 +6,7 @@ import LoginPage from "./components/pages/auth/login/LoginPage";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { Loader } from "lucide-react";
 
 const App = () => {
   const { data: authUser, isLoading } = useQuery({
@@ -37,7 +38,7 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-bars loading-lg" />
+        <Loader className="animate-spin size-16" />
       </div>
     );
   }
